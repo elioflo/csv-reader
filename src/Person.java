@@ -1,14 +1,11 @@
 public class Person {
   private String name;
   private int age;
+  private char genero;
 
   public Person() {
   }
 
-  public Person(String name, int age) {
-    this.name = name;
-    this.age = age;
-  }
 
   public String getName() {
     return name;
@@ -20,6 +17,14 @@ public class Person {
 
   public int getAge() {
     return age;
+  }
+
+  public char getGenero() {
+    return genero;
+  }
+
+  public void setGenero(char genero) {
+    this.genero = genero;
   }
 
   public void setAge(int age) {

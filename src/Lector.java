@@ -37,6 +37,8 @@ public class Lector {
     for (int index = 0; index < values.length; index++) {
       if(parameterTypes[index].equals(int.class)) {
         values[index] = Integer.parseInt(arguments[index]);
+      }else if(parameterTypes[index].equals(char.class)) {
+        values[index] = arguments[index].charAt(0);
       }else{
         values[index] = arguments[index];
       }
@@ -79,7 +81,9 @@ public class Lector {
       for (int index = 0; index < values.length; index++) {
         if(parameterTypes[index].equals(int.class)) {
           values[index] = Integer.parseInt(arguments[index]);
-        }else{
+        } else if(parameterTypes[index].equals(char.class)) {
+          values[index] = arguments[index].charAt(0);
+        } else {
           values[index] = arguments[index];
         }
       }
