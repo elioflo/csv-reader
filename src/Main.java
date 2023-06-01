@@ -4,11 +4,15 @@ import java.util.List;
 
 public class Main {
   public static void main(String[] args) {
-    Lector lector = new Lector();
-    Person person = lector.createObject("Jose, 25, M", "name, age, genero", Person.class);
-    System.out.println(person.getName()+" tiene "+person.getAge());
+//    Lector lector = new Lector();
+//    Entidad entidad = lector.createObject("Subte, Transporte", "nombre, tipo", Entidad.class);
+//    System.out.println(entidad.getNombre()+" es de tipo "+entidad.getTipo());
 
-    Perro perro = lector.createObject("Rambo, Pastor Malinois, 8","nombre, raza, edad", Perro.class);
-    System.out.println(perro);
+    Class<?> clase = Perro.class;
+    Lector lector = new Lector(new CSV(clase));
+    List<Perro> perros = lector.cargarLista("perritos.csv");
+    perros.forEach(perro -> System.out.println(perro.getNombre()+ " es " + perro.getRaza() + ". Tiene " + perro.getEdad()));
+
   }
+
 }

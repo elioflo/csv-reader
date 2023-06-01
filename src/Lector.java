@@ -3,9 +3,19 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
-import java.util.StringTokenizer;
+import static java.nio.file.Files.lines;
+
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
 
 public class Lector {
+
+  private Formato formato;
+
+  public Lector(Formato formato) {
+    this.formato = formato;
+  }
 
   private String capitalize(String str) {
     return str.substring(0,1).toUpperCase().concat(str.substring(1));
@@ -54,9 +64,12 @@ public class Lector {
     return List.of(object);
   }
 
-  public <T> T createObject(String data, String format, Class<T> className) {
-    String[] attributes = Arrays.stream(format.split(",")).map(String::trim).toArray(String[]::new);
-    String[] arguments = Arrays.stream(data.split(",")).map(String::trim).toArray(String[]::new);
+  private String[] separarDatos(String datos) {
+    return Arrays.stream(datos.split(",")).map(String::trim).toArray(String[]::new);
+  }
+  public <T> T createObject(String data, String formato, Class<T> className) {
+    String[] attributes = separarDatos(formato);
+    String[] arguments = separarDatos(data);
     Method[] getters = Arrays.stream(attributes).map(attr -> {
       try {
         return className.getMethod("get"+capitalize(attr));
@@ -100,5 +113,16 @@ public class Lector {
       throw new RuntimeException(e);
     }
     return (T) object;
+  }
+
+  public <T> List<T> cargarLista(String nombreArchivo) {
+    List<T> lista;
+    try {
+      formato.setUp(lines(Paths.get(nombreArchivo)).findFirst().get());
+      lista = (List<T>) lines(Paths.get(nombreArchivo)).map(data -> formato.crearObjeto(data)).toList();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+    return lista;
   }
 }
